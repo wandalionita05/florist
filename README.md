@@ -1,15 +1,8 @@
-# GroceryApp Starter
+# Florist App
 
-Streamlined grocery app template for a straightforward shopping experience. 🛒✨
+Streamlined florist app for a straightforward shopping experience. 🛒✨
 
 Feel free to star ⭐ the repository if you find it valuable.
-
-## Design
-
-**Click the image below to view the Figma design:**
-
-[![Design Preview](https://github.com/ramiomarouayache/Flutter-GroceryApp/blob/main/screenshots/Cover.jpg)](https://www.figma.com/embed?embed_host=oembed&amp;url=https://www.figma.com/file/eyeYwe0hoEch31j6d3EXyE/GroceryApp-Starter-(Community)?type=design&amp;node-id=3-2&amp;mode=design&amp;t=LwLW2onM0GKLuFdU-0)
-
 
 
 ## ✨Requirements
@@ -22,11 +15,6 @@ Feel free to star ⭐ the repository if you find it valuable.
    - Understanding of MVVM architecture
    - Familiarity with API handling
    - Basics of state management using GetX
-  
-## Test
-* You can download the pre-released version for android devices from here [releases](https://github.com/ramiomarouayache/Flutter-GroceryApp/releases/tag/v0.3.1).
-<video src="https://github.com/ramiomarouayache/Flutter-GroceryApp/assets/98425058/5ae355c9-39e0-478e-9b3e-870953b566ca"></video>
-
   
 ## Setup
 * Start by configuring your product endpoint, credentials, and parameters in `lib\constants\AppConstants`.

@@ -4,5 +4,5 @@ class AppConstants {
 
   static const String BASE_URL = "YOUR_API_PREFIX";
   static const String API_KEY = "YOUR_API_KEY"; //IF_EXIST
-  static const String projectOwnerName = "Rami Omar";
+  static const String projectOwnerName = "Kelompok 4";
 }
