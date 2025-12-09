@@ -8,14 +8,14 @@ class AppThemes {
       primary: Color(0xff98A2B3),
       secondary: Colors.grey[300]!,
     ),
-    primaryColor: const Color(0xff2382AA),
+    primaryColor: const Color.fromARGB(255,224, 132, 154),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: Color(0xff2382AA),
-        selectedItemColor: const Color(0xff2382AA),
+        selectedItemColor: const Color.fromARGB(255,224, 132, 154),
         unselectedItemColor: Color.fromARGB(255, 176, 176, 176),
         type: BottomNavigationBarType.shifting),
     scaffoldBackgroundColor: Colors.white,
-    cardColor: Color(0xffE9F5FA),
+    cardColor: Color.fromARGB(255, 238, 185, 193),
     textTheme: const TextTheme(bodyMedium: TextStyle(color: Colors.black)),
     brightness: Brightness.light,
     appBarTheme: AppBarTheme(
@@ -37,7 +37,7 @@ class AppThemes {
         inputDecorationTheme: InputDecorationTheme(
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.0),
-            borderSide: BorderSide(width: 2, color: Color(0xff2382AA)),
+            borderSide: BorderSide(width: 2, color: const Color.fromARGB(255,224, 132, 154)),
           ),
           isDense: true,
           contentPadding: const EdgeInsets.symmetric(horizontal: 16),
@@ -54,7 +54,7 @@ class AppThemes {
     primaryColor: const Color(0xff2382AA),
     colorScheme: ColorScheme.dark(
         surface: Color(0xff0D1F29),
-        primary: Color(0xff98A2B3),
+        primary: Color.fromARGB(255, 236, 163, 178),
         secondary: Colors.grey[800]!),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
       backgroundColor: Color(0xff2382AA),
@@ -62,7 +62,7 @@ class AppThemes {
           Color.fromARGB(255, 255, 255, 255), // Selected item color
       unselectedItemColor: Colors.grey, // Unselected item color
     ),
-    cardColor: Color(0xff1A3848),
+    cardColor: Color.fromARGB(255, 236, 163, 178),
     textTheme: const TextTheme(bodyMedium: TextStyle(color: Colors.white)),
     brightness: Brightness.dark,
     appBarTheme: AppBarTheme(

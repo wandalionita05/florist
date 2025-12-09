@@ -44,7 +44,7 @@ class SearchTextField extends StatelessWidget {
         ),
         prefixIcon: Icon(
           CupertinoIcons.search,
-          color: Color(0xff2382AA),
+          color: const Color.fromARGB(255,224, 132, 154),
         ),
         suffixIcon: textEditingController != null
             ? IconButton(

@@ -6,10 +6,10 @@ import 'package:florist/domain/productViewModel.dart';
 import 'package:florist/utils/myTheme.dart';
 import 'package:florist/views/common_widgets/appBar.dart';
 import 'package:florist/views/common_widgets/dropDownHomeMenu.dart';
+import 'package:florist/views/common_widgets/flower_product_card.dart';
 import 'common_widgets/carousel.dart';
 import 'package:get/get.dart';
 import 'common_widgets/categories_view.dart';
-import 'common_widgets/horizontal_product_list.dart';
 import 'common_widgets/see_all_view.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -22,22 +22,14 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen>
     with AutomaticKeepAliveClientMixin {
   final ProductViewModel productViewModel = Get.find<ProductViewModel>();
+
   @override
   bool get wantKeepAlive => true;
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     super.build(context);
+
     return Scaffold(
       appBar: MyAppBar(
           leading: Padding(
@@ -45,59 +37,44 @@ class _DashboardScreenState extends State<DashboardScreen>
             child: DropDownMenu(),
           ),
           leadingWidth: MediaQuery.of(context).size.width * 2 / 4,
-          title: Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(
-                  width: 12,
-                ),
-                Icon(
-                  Icons.delivery_dining,
-                  color: Colors.redAccent,
-                ),
-                SizedBox(
-                  width: 4,
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Free delivery',
-                      style: TextStyle(
-                          color: Get.theme.colorScheme.primary,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12,
-                          letterSpacing: 0),
+          title: Row(
+            children: <Widget>[
+              SizedBox(width: 12),
+              Icon(Icons.delivery_dining, color: Colors.redAccent),
+              SizedBox(width: 4),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Free delivery',
+                    style: TextStyle(
+                        color: Get.theme.colorScheme.primary,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 12),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    '2000da +',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
                     ),
-                    SizedBox(
-                      height: 8,
-                    ),
-                    Text(
-                      '2000da +',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                ],
+              ),
+            ],
           ),
           actions: <Widget>[
             ThemeSwitcher(
                 clipper: ThemeSwitcherCircleClipper(),
                 builder: (context) {
                   return InkResponse(
-                    onTap: () => {
+                    onTap: () {
                       ThemeSwitcher.of(context).changeTheme(
                           theme: Get.isDarkMode
                               ? AppThemes.lightTheme1
                               : AppThemes.darkTheme2,
-                          isReversed: Get.isDarkMode ? false : true)
+                          isReversed: Get.isDarkMode ? false : true);
                     },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -114,10 +91,10 @@ class _DashboardScreenState extends State<DashboardScreen>
       body: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         child: Column(children: [
+          // Search
           Padding(
               padding: const EdgeInsets.all(16),
               child: TextField(
-                  textAlignVertical: TextAlignVertical.center,
                   readOnly: true,
                   onTap: () => Get.toNamed('/search'),
                   decoration: InputDecoration(
@@ -131,10 +108,9 @@ class _DashboardScreenState extends State<DashboardScreen>
                           fontSize: 14,
                           color: Get.theme.colorScheme.primary,
                           fontWeight: FontWeight.w500),
-                      contentPadding: EdgeInsets.symmetric(vertical: 0),
                       prefixIcon: Icon(
                         CupertinoIcons.search,
-                        color: Color(0xff2382AA),
+                        color: Color.fromARGB(255, 224, 132, 154),
                       ),
                       suffixIcon: InkWell(
                         onTap: () => Get.toNamed("/ArExperience"),
@@ -146,102 +122,181 @@ class _DashboardScreenState extends State<DashboardScreen>
                           ),
                         ),
                       )))),
+
+          // Carousel
           Padding(
               padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
               child: Carousel()),
-          Column(
-            children: [
-              SizedBox(
-                height: 16,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: SeeAllView(
-                    context: context,
-                    name: "Categories 🛍️",
-                    onTapAction: () => Get.toNamed("/dashboard", arguments: 1)),
-              ),
-              SizedBox(
-                height: 16,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Column(
+
+          // Categories
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: SeeAllView(
+              context: context,
+              name: "Categories 🛍️",
+              onTapAction: () => Get.toNamed("/dashboard", arguments: 1),
+            ),
+          ),
+          SizedBox(height: 16),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              children: [
+                Row(
                   children: [
-                    Row(
-                      children: [
-                        CategoriesView(
-                            imagePath: Assets.imagesFish,
-                            catName: "Seafood",
-                            context: context),
-                        CategoriesView(
-                            imagePath: Assets.imagesFalafel,
-                            catName: "Vegetables",
-                            context: context),
-                        CategoriesView(
-                            imagePath: Assets.imagesBanana,
-                            catName: "Fruits",
-                            context: context),
-                        CategoriesView(
-                            imagePath: Assets.imagesIceCream,
-                            catName: "Snacks",
-                            context: context),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 16,
-                    ),
-                    Row(
-                      children: [
-                        CategoriesView(
-                            imagePath: Assets.imagesDish,
-                            catName: "Canned food",
-                            context: context),
-                        CategoriesView(
-                            imagePath: Assets.imagesRice,
-                            catName: "Pasta, Rice",
-                            context: context),
-                        CategoriesView(
-                            imagePath: Assets.imagesSavon,
-                            catName: "Home Supplie",
-                            context: context),
-                        CategoriesView(
-                            imagePath: Assets.imagesMakeup,
-                            catName: "Woman care",
-                            context: context),
-                      ],
-                    ),
+                    CategoriesView(
+                        imagePath: Assets.imagesFish,
+                        catName: "Seafood",
+                        context: context),
+                    CategoriesView(
+                        imagePath: Assets.imagesFalafel,
+                        catName: "Vegetables",
+                        context: context),
+                    CategoriesView(
+                        imagePath: Assets.imagesBanana,
+                        catName: "Fruits",
+                        context: context),
+                    CategoriesView(
+                        imagePath: Assets.imagesIceCream,
+                        catName: "Snacks",
+                        context: context),
                   ],
                 ),
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: SeeAllView(
-                    context: context,
-                    name: "Best deals 🔥",
-                    onTapAction: () => Get.toNamed("/vegetables")),
-              ),
-              SizedBox(
-                height: 12,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 16),
-                child: Container(
-                    height: 210,
-                    //padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                    child: HorizontalProductList(
-                      page: 1,
-                      isSecondList: false,
-                    )),
-              ),
-              SizedBox(
-                height: 16,
-              ),
-            ],
+                SizedBox(height: 16),
+                Row(
+                  children: [
+                    CategoriesView(
+                        imagePath: Assets.imagesDish,
+                        catName: "Canned food",
+                        context: context),
+                    CategoriesView(
+                        imagePath: Assets.imagesRice,
+                        catName: "Pasta, Rice",
+                        context: context),
+                    CategoriesView(
+                        imagePath: Assets.imagesSavon,
+                        catName: "Home Supplie",
+                        context: context),
+                    CategoriesView(
+                        imagePath: Assets.imagesMakeup,
+                        catName: "Woman care",
+                        context: context),
+                  ],
+                ),
+              ],
+            ),
           ),
+
+          SizedBox(height: 20),
+
+          // ============================================================
+          //     SECTION 1: PALING BANYAK DIBELI
+          // ============================================================
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: SeeAllView(
+              context: context,
+              name: "Paling Banyak Dibeli 🌸",
+              onTapAction: () => Get.toNamed("/best-seller"),
+            ),
+          ),
+
+          SizedBox(height: 12),
+
+          // FlowerProductCard List
+          Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: SizedBox(
+              height: 230,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: [
+                  FlowerProductCard(
+                    image: "https://i.imgur.com/SYHeu2v.jpeg",
+                    name: "Bouquet Mawar Pink",
+                    price: "Rp 120.000",
+                    rating: 4.8,
+                    onTap: () {},
+                    onAddToCart: () {},
+                  ),
+                  FlowerProductCard(
+                    image: "https://i.imgur.com/fiZQwqG.jpeg",
+                    name: "Bucket Wisuda Elegan",
+                    price: "Rp 150.000",
+                    rating: 4.9,
+                    onTap: () {},
+                    onAddToCart: () {},
+                  ),
+                  FlowerProductCard(
+                    image: "https://i.imgur.com/tjx3PqA.jpeg",
+                    name: "Tulip Pastel Mix",
+                    price: "Rp 175.000",
+                    rating: 4.7,
+                    onTap: () {},
+                    onAddToCart: () {},
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          SizedBox(height: 30),
+
+          // ============================================================
+          //     SECTION 2: REKOMENDASI WISUDA
+          // ============================================================
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: SeeAllView(
+              context: context,
+              name: "Rekomendasi Wisuda 🎓",
+              onTapAction: () => Get.toNamed("/graduation"),
+            ),
+          ),
+
+          SizedBox(height: 12),
+
+          // FlowerProductCard List
+          Padding(
+            padding: const EdgeInsets.only(left: 16),
+            child: SizedBox(
+              height: 230,
+              child: ListView(
+                scrollDirection: Axis.horizontal,
+                children: [
+                  FlowerProductCard(
+                    image: "https://i.imgur.com/v7Mkt8b.jpeg",
+                    name: "Bucket Wisuda Premium",
+                    price: "Rp 190.000",
+                    rating: 4.9,
+                    onTap: () {},
+                    onAddToCart: () {},
+                  ),
+                  FlowerProductCard(
+                    image: "https://i.imgur.com/ACbnrZO.jpeg",
+                    name: "Bouquet Mawar Elegan",
+                    price: "Rp 130.000",
+                    rating: 4.8,
+                    onTap: () {},
+                    onAddToCart: () {},
+                  ),
+                  FlowerProductCard(
+                    image: "https://i.imgur.com/Bq5Vyzm.jpeg",
+                    name: "Wisuda Teddy Bear Flowers",
+                    price: "Rp 200.000",
+                    rating: 5.0,
+                    onTap: () {},
+                    onAddToCart: () {},
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          SizedBox(height: 40),
         ]),
       ),
     );

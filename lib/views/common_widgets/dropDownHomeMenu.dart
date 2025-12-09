@@ -11,7 +11,7 @@ class DropDownMenu extends StatelessWidget {
     '16-Algiers',
     '23-Annaba',
     '25-Constantine',
-    '31-Oran',
+    '31-Oran',  
     '19-Sétif',
   ];
 
@@ -36,7 +36,7 @@ class DropDownMenu extends StatelessWidget {
             width: 300,
             leadingIcon: const Icon(
               Icons.location_city_rounded,
-              color: Color(0xff2382AA),
+              color: const Color.fromARGB(255,224, 132, 154),
             ),
             onSelected: (String? value) {
               // This is called when the user selects an item.

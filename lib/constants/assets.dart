@@ -112,7 +112,7 @@ class Assets {
 
   /// Assets for imagesWelcomeBg
   /// assets/images/welcome_bg.webp
-  static const String imagesWelcomeBg = "assets/images/welcome_bg.webp";
+  static const String imagesWelcomeBg = "assets/images/welcome_bg.png";
 
   /// Assets for imagesZeroBasket
   /// assets/images/zeroBasket.lottie

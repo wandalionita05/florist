@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:florist/constants/assets.dart';
 import 'package:florist/views/registration.dart';
-import 'package:florist/views/common_widgets/appBar.dart';
+import 'package:florist/views/common_widgets/appBar.dart'; 
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({Key? key}) : super(key: key);
@@ -46,10 +46,10 @@ class WelcomeScreen extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 8),
                     child: Text(
-                      "Get your groceries delivered to your home",
-                      textAlign: TextAlign.center,
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+
+                        "Login",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
                   ),
                   SizedBox(
@@ -58,35 +58,69 @@ class WelcomeScreen extends StatelessWidget {
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 32),
                     child: Text(
-                      "The best delivery app in town for delivering your daily fresh groceries",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14,
-                          color: Get.theme.colorScheme.primary),
+
+                      "Use your email and password to continue",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                            color: Get.theme.colorScheme.primary,
+                          ),
                     ),
                   ),
-                  SizedBox(
-                    height: 36,
+                  const SizedBox(height: 30),
+
+                  // EMAIL
+                  TextField(
+                    decoration: InputDecoration(
+                      labelText: "Email",
+                      border: OutlineInputBorder(),
+                    ),
                   ),
-                  FractionallySizedBox(
-                    widthFactor: 0.5,
+
+                  const SizedBox(height: 16),
+
+                  // PASSWORD
+                  TextField(
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      labelText: "Password",
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  // LOGIN BUTTON
+                  SizedBox(
+                    width: double.infinity,
                     child: ElevatedButton(
-                        onPressed: () {
-                          Get.to(() => RegistrationScreen());
-                        },
-                        style: TextButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          textStyle: TextStyle(
-                              fontSize: 14, fontWeight: FontWeight.w500),
-                          shape: StadiumBorder(),
-                          backgroundColor: Get.theme.primaryColor,
-                        ),
-                        child: Text(
-                          "Shop now",
-                          style: TextStyle(color: Colors.white),
-                        )),
-                  )
+                      onPressed: () {
+                        // TODO: login API
+                        Get.snackbar("Info", "Login clicked");
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Get.theme.primaryColor,
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        shape: StadiumBorder(),
+                      ),
+                      child: Text("Login", style: TextStyle(color: Colors.white)),
+                    ),
+                  ),
+
+                  const SizedBox(height: 12),
+
+                  // REGISTER LINK
+                  GestureDetector(
+                    onTap: () => Get.to(() => RegistrationScreen()),
+                    child: Text(
+                      "Create new account",
+                      style: TextStyle(
+                          color: Get.theme.primaryColor,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+
                 ],
               ),
             ),
