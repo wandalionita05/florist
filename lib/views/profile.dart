@@ -85,7 +85,7 @@ class Profile extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               ProfileMenuWidget(
-                  title: "terms & conditions",
+                  title: "Terms & Conditions",
                   icon: Icons.info,
                   onPress: () {}),
               ProfileMenuWidget(
@@ -167,8 +167,11 @@ class Profile extends StatelessWidget {
                       ),
                     );
                   }),
-            ],
-          ),
+              ProfileMenuWidget(
+                  title: "Log Out",
+                  icon: Icons.logout,
+                  onPress: () {}),
+          ]),
         ),
       ),
     );
