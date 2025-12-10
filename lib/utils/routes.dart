@@ -24,5 +24,6 @@ class MyRoutes {
     //GetPage(name: '/search', page: () => VegetablesSearchScreen()),
     GetPage(name: '/details', page: () => VegetableDetailScreen()),
     //GetPage(name: '/ArExperience', page: () => ArExperience()),
+    GetPage(name: '/home', page: () => DashboardScreen()),
   ];
 }
