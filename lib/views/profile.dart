@@ -7,6 +7,7 @@ import 'package:florist/constants/assets.dart';
 import 'package:florist/utils/helper.dart';
 import 'package:florist/views/common_widgets/profileList.dart';
 import 'package:lottie/lottie.dart';
+import 'package:florist/views/welcome.dart';
 
 class Profile extends StatelessWidget {
   Profile({Key? key}) : super(key: key);
@@ -168,9 +169,17 @@ class Profile extends StatelessWidget {
                     );
                   }),
               ProfileMenuWidget(
-                  title: "Log Out",
-                  icon: Icons.logout,
-                  onPress: () {}),
+                title: "Log Out",
+                icon: Icons.logout,
+                onPress: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => WelcomeScreen(),
+                    ),
+                  );
+                },
+              )
           ]),
         ),
       ),
