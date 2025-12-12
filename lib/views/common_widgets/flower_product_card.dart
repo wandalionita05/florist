@@ -53,68 +53,71 @@ class FlowerProductCard extends StatelessWidget {
 
             SizedBox(height: 8),
 
-            // NAME
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Text(
-                name,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
+            // NAME + RATING + PRICE WRAPPED IN FLEXIBLE COLUMN
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // NAME
+                    Text(
+                      name,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14,
+                      ),
+                    ),
+
+                    SizedBox(height: 4),
+
+                    // RATING
+                    Row(
+                      children: [
+                        Icon(Icons.star, size: 16, color: Colors.amber),
+                        SizedBox(width: 4),
+                        Text(
+                          rating.toString(),
+                          style: TextStyle(fontSize: 13),
+                        )
+                      ],
+                    ),
+
+                    Spacer(),
+
+                    // PRICE + ADD BUTTON
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          price,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                            color: Color.fromARGB(255, 224, 132, 154),
+                          ),
+                        ),
+                        InkWell(
+                          onTap: onAddToCart,
+                          child: Container(
+                            padding: EdgeInsets.all(6),
+                            decoration: BoxDecoration(
+                              color: Color.fromARGB(255, 224, 132, 154),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Icon(
+                              Icons.add,
+                              color: Colors.white,
+                              size: 18,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
                 ),
-              ),
-            ),
-
-            // RATING
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-              child: Row(
-                children: [
-                  Icon(Icons.star,
-                      size: 16, color: Colors.amber),
-                  SizedBox(width: 4),
-                  Text(
-                    rating.toString(),
-                    style: TextStyle(fontSize: 13),
-                  )
-                ],
-              ),
-            ),
-
-            Spacer(),
-
-            // PRICE + ADD TO CART BUTTON
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    price,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 15,
-                      color: Color.fromARGB(255, 224, 132, 154),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: onAddToCart,
-                    child: Container(
-                      padding: EdgeInsets.all(6),
-                      decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 224, 132, 154),
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Icon(
-                        Icons.add,
-                        color: Colors.white,
-                        size: 18,
-                      ),
-                    ),
-                  )
-                ],
               ),
             )
           ],

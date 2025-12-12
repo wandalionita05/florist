@@ -1,9 +1,9 @@
 import 'dart:convert';
-
 import 'package:florist/models/dto/product.dart';
 
 class CartItem extends Product {
   int itemQuantity;
+
   CartItem({
     required String? id,
     required String? imagefrontsmallurl,
@@ -14,26 +14,21 @@ class CartItem extends Product {
     required String? categories,
     required this.itemQuantity,
   }) : super(
-            id: id,
-            imagefrontsmallurl: imagefrontsmallurl,
-            imagefronturl: imagefronturl,
-            productname: productname,
-            quantity: quantity,
-            price: price,
-            categories: categories);
+          id: id,
+          imagefrontsmallurl: imagefrontsmallurl,
+          imagefronturl: imagefronturl,
+          productname: productname,
+          quantity: quantity,
+          price: price,
+          categories: categories,
+        );
 
-  // ---------------------------------------------------------------------------
-  // JSON
-  // ---------------------------------------------------------------------------
+  // ---------------- JSON ----------------
 
   factory CartItem.fromRawJson(String str) =>
       CartItem.fromMap(json.decode(str));
 
   String toRawJson() => json.encode(toMap());
-
-  // ---------------------------------------------------------------------------
-  // Maps
-  // ---------------------------------------------------------------------------
 
   factory CartItem.fromMap(Map<String, dynamic> json) {
     return CartItem(
@@ -47,16 +42,17 @@ class CartItem extends Product {
       categories: json['categories'],
     );
   }
+
   Map<String, dynamic> toMap() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['id'] = id;
-    data['image_front_small_url'] = imagefrontsmallurl;
-    data['imagefronturl'] = imagefronturl;
-    data['product_name'] = productname;
-    data['quantity'] = quantity;
-    data['price'] = price;
-    data['itemQuantity'] = itemQuantity;
-    data['categories'] = categories;
-    return data;
+    return {
+      'id': id,
+      'image_front_small_url': imagefrontsmallurl,
+      'imagefronturl': imagefronturl,
+      'product_name': productname,
+      'quantity': quantity,
+      'price': price,
+      'itemQuantity': itemQuantity,
+      'categories': categories,
+    };
   }
 }

@@ -8,9 +8,12 @@ import 'package:florist/utils/helper.dart';
 import 'package:florist/views/common_widgets/profileList.dart';
 import 'package:lottie/lottie.dart';
 import 'package:florist/views/welcome.dart';
+import 'package:florist/domain/user_controller.dart';
 
 class Profile extends StatelessWidget {
   Profile({Key? key}) : super(key: key);
+
+  final UserController userController = Get.find<UserController>();
 
   static final Email email = Email(
     body: '',
@@ -23,164 +26,149 @@ class Profile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Container(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            children: [
-              SizedBox(
-                height: 40,
-              ),
-              Stack(
-                children: [
-                  SizedBox(
-                    width: 120,
-                    height: 120,
-                    child: Container(
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100)),
-                        child: Image.asset(Assets.imagesUser)),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Container(
-                      width: 35,
-                      height: 35,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(100),
-                          color: Get.theme.primaryColor),
-                      child: const Icon(
-                        Icons.camera_alt_rounded,
-                        color: Colors.white,
-                        size: 20,
-                      ),
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+            const SizedBox(height: 40),
+
+            /// AVATAR
+            Stack(
+              children: [
+                SizedBox(
+                  width: 120,
+                  height: 120,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(100),
+                    child: Image.asset(
+                      Assets.imagesUser,
+                      fit: BoxFit.cover,
                     ),
                   ),
-                ],
-              ),
-              const SizedBox(height: 12),
-              Text("Guest", style: Theme.of(context).textTheme.headlineSmall),
-              Text("user app", style: Theme.of(context).textTheme.bodySmall),
-              const SizedBox(height: 16),
+                ),
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: Container(
+                    width: 35,
+                    height: 35,
+                    decoration: BoxDecoration(
+                      color: Get.theme.primaryColor,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.camera_alt_rounded,
+                      color: Colors.white,
+                      size: 20,
+                    ),
+                  ),
+                ),
+              ],
+            ),
 
-              const Divider(
-                thickness: 0.1,
-              ),
-              const SizedBox(height: 10),
+            const SizedBox(height: 12),
 
-              /// -- MENU
-              ProfileMenuWidget(
-                  title: "Profile prefrences",
-                  icon: Icons.account_circle,
-                  onPress: () {}),
-              ProfileMenuWidget(
-                  title: "Delivery prefrences",
-                  icon: Icons.delivery_dining,
-                  onPress: () {}),
-              ProfileMenuWidget(
-                  title: "Change location",
-                  icon: Icons.settings,
-                  onPress: () {}),
-              const Divider(
-                thickness: 0.1,
-              ),
-              const SizedBox(height: 10),
-              ProfileMenuWidget(
-                  title: "Terms & Conditions",
-                  icon: Icons.info,
-                  onPress: () {}),
-              ProfileMenuWidget(
-                  title: "About us",
-                  icon: Icons.developer_mode_rounded,
-                  endIcon: false,
-                  onPress: () {
-                    Get.dialog(
-                      Dialog(
-                        child: Container(
-                          padding: EdgeInsets.all(16.0),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              SizedBox(
-                                height: 8,
-                              ),
-                              Text(
-                                "Made With ❤️ By #${AppConstants.projectOwnerName}",
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.normal),
-                              ),
-                              Lottie.asset(
-                                Assets.imagesCatThinking,
-                                addRepaintBoundary: true,
-                                width: 300,
-                                repeat: false,
-                                //height: 400,
-                                decoder: customDecoder,
-                              ),
-                              Text(
-                                "Rate our app",
-                                style: TextStyle(fontSize: 12),
-                              ),
-                              SizedBox(height: 14),
-                              RatingBar.builder(
-                                initialRating: 5,
-                                minRating: 1,
-                                direction: Axis.horizontal,
-                                allowHalfRating: true,
-                                itemCount: 5,
-                                itemPadding:
-                                    EdgeInsets.symmetric(horizontal: 4.0),
-                                itemBuilder: (context, _) => Icon(
-                                  Icons.star,
-                                  color: Colors.amber,
-                                ),
-                                onRatingUpdate: (rating) {
-                                  print(rating);
-                                },
-                              ),
-                              SizedBox(height: 14),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    flex: 1,
-                                    child: ElevatedButton(
-                                      onPressed: () async => {
-                                        await Get.to(() =>
-                                            FlutterEmailSender.send(email))
-                                      }, // Close the dialog
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: Get.theme.primaryColor,
-                                        //side: BorderSide.none,
-                                      ),
-                                      child: const Text(
-                                        "Email us",
-                                        style: TextStyle(
-                                            fontSize: 14, color: Colors.white),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
+            /// USER INFO (REAKTIF)
+            Obx(() => Text(
+                  userController.name.value.isEmpty
+                      ? 'Guest'
+                      : userController.name.value,
+                  style: Theme.of(context).textTheme.headlineSmall,
+                )),
+            Obx(() => Text(
+                  userController.email.value.isEmpty
+                      ? 'user app'
+                      : userController.email.value,
+                  style: Theme.of(context).textTheme.bodySmall,
+                )),
+
+            const SizedBox(height: 16),
+            const Divider(thickness: 0.1),
+            const SizedBox(height: 10),
+
+            /// MENU
+            ProfileMenuWidget(
+              title: "Profile preferences",
+              icon: Icons.account_circle,
+              onPress: () => Get.toNamed('/profile-edit'),
+            ),
+            ProfileMenuWidget(
+              title: "Delivery preferences",
+              icon: Icons.delivery_dining,
+              onPress: () => Get.toNamed('/delivery-preferences'),
+            ),
+            ProfileMenuWidget(
+              title: "Change location",
+              icon: Icons.settings,
+              onPress: () => Get.toNamed('/change-location'),
+            ),
+
+            const Divider(thickness: 0.1),
+            const SizedBox(height: 10),
+
+            ProfileMenuWidget(
+              title: "Terms & Conditions",
+              icon: Icons.info,
+              onPress: () => Get.toNamed('/terms-conditions'),
+            ),
+
+            ProfileMenuWidget(
+              title: "About us",
+              icon: Icons.developer_mode_rounded,
+              endIcon: false,
+              onPress: () {
+                Get.dialog(
+                  Dialog(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            "Made With ❤️ By #${AppConstants.projectOwnerName}",
+                            style: const TextStyle(fontSize: 12),
                           ),
-                        ),
+                          Lottie.asset(
+                            Assets.imagesCatThinking,
+                            width: 300,
+                            repeat: false,
+                            decoder: customDecoder,
+                          ),
+                          const SizedBox(height: 10),
+                          RatingBar.builder(
+                            initialRating: 5,
+                            minRating: 1,
+                            allowHalfRating: true,
+                            itemCount: 5,
+                            itemBuilder: (_, __) => const Icon(
+                              Icons.star,
+                              color: Colors.amber,
+                            ),
+                            onRatingUpdate: (_) {},
+                          ),
+                          const SizedBox(height: 12),
+                          ElevatedButton(
+                            onPressed: () async {
+                              await FlutterEmailSender.send(email);
+                            },
+                            child: const Text("Email us"),
+                          ),
+                        ],
                       ),
-                    );
-                  }),
-              ProfileMenuWidget(
-                title: "Log Out",
-                icon: Icons.logout,
-                onPress: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => WelcomeScreen(),
                     ),
-                  );
-                },
-              )
-          ]),
+                  ),
+                );
+              },
+            ),
+
+            ProfileMenuWidget(
+              title: "Log Out",
+              icon: Icons.logout,
+              onPress: () {
+                userController.clearUser();
+                Get.offAll(() => WelcomeScreen());
+              },
+            ),
+          ],
         ),
       ),
     );
