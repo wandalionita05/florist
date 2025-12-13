@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 import 'package:get/get.dart';
 import 'package:florist/views/profile.dart';
-import 'package:florist/views/categories.dart';
 import 'package:florist/views/dashboard.dart';
 import 'package:florist/views/cart.dart';
+import 'package:florist/views/search.dart';
 import 'package:florist/domain/cartViewModel.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -27,30 +27,42 @@ class _HomeScreenState extends State<HomeScreen>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    //final int initialTabIndex = Get.arguments ?? 0;
     _pageController = PageController(initialPage: _currentIndex.value);
-    //_changeTab(initialTabIndex);
     shoppingCart.getCartItemList();
   }
 
   @override
   Widget build(BuildContext context) {
     super.build(context);
+
     return ThemeSwitchingArea(
       child: Scaffold(
         body: PageView(
           controller: _pageController,
+          physics: const NeverScrollableScrollPhysics(),
           onPageChanged: (index) {
             _currentIndex.value = index;
           },
           children: [
             DashboardScreen(),
-            Categories(),
+            SearchScreen(),
             CartScreen(),
             Profile(),
           ],
         ),
-        bottomNavigationBar: _buildBottomNavigationBar(),
+        bottomNavigationBar: Container(
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black12,
+                blurRadius: 8,
+                offset: Offset(0, -2),
+              )
+            ],
+          ),
+          child: _buildBottomNavigationBar(),
+        ),
       ),
     );
   }
@@ -74,27 +86,29 @@ class _HomeScreenState extends State<HomeScreen>
   Widget _buildBottomNavigationBar() {
     return Obx(() {
       return BottomNavigationBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
         currentIndex: _currentIndex.value,
         onTap: (index) {
           _pageController.jumpToPage(index);
         },
+        selectedItemColor: const Color(0xFFE0849A),
+        unselectedItemColor: Colors.grey,
+        type: BottomNavigationBarType.fixed,
         items: [
           _buildBottomNavigationBarItem(
-              _currentIndex.value == 0
-                  ? Icons.home_rounded
-                  : Icons.home_outlined,
-              "Home"),
+            _currentIndex.value == 0 ? Icons.home_rounded : Icons.home_outlined,
+            "Home",
+          ),
           _buildBottomNavigationBarItem(
-              _currentIndex.value == 1
-                  ? CupertinoIcons.cube_box_fill
-                  : CupertinoIcons.cube_box,
-              "Categories"),
+            CupertinoIcons.search,
+            "Search",
+          ),
           _buildCartNavigationBarItem(),
           _buildBottomNavigationBarItem(
-              _currentIndex.value == 3
-                  ? Icons.settings
-                  : Icons.settings_outlined,
-              "Settings"),
+            _currentIndex.value == 3 ? Icons.settings : Icons.settings_outlined,
+            "Settings",
+          ),
         ],
       );
     });
@@ -119,10 +133,10 @@ class _HomeScreenState extends State<HomeScreen>
               ? badges.Badge(
                   badgeContent: Text(
                     cartUpdates.toString(),
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                   ),
                   position: badges.BadgePosition.topEnd(top: -10, end: -10),
-                  child: Icon(Icons.shopping_cart_rounded),
+                  child: const Icon(Icons.shopping_cart_rounded),
                 )
               : const Icon(Icons.shopping_cart_outlined);
         },

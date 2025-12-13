@@ -98,7 +98,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                   widthFactor: 1,
                   child: ElevatedButton(
                     onPressed: () {
-                      // TODO: Hubungkan ke API register
+                      // TODO (register): Hubungkan ke API register
                       Get.offAllNamed('/dashboard');
                     },
                     style: TextButton.styleFrom(

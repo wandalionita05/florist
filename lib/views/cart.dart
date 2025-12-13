@@ -9,236 +9,172 @@ import 'common_widgets/cart_item.dart';
 
 class CartScreen extends StatelessWidget {
   CartScreen({Key? key}) : super(key: key);
-
   final ShoppingCartViewModel cartViewModel = Get.find<ShoppingCartViewModel>();
-
-  final RxBool isCartEmpty = false.obs;
+  static const int minimumOrderValue = 120000;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //backgroundColor: Colors.white,
       appBar: const MyAppBar(
-        title: Text(
-          "Cart 🛒",
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        title: Center(
+          child: Text(
+            "Cart 🛒",
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
         ),
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
+        children: [
           Expanded(
-            flex: 1,
             child: Padding(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               child: Obx(() {
-                final cartItemList =
-                    cartViewModel.productCartMap.values.toList();
-                if (cartItemList.isEmpty) {
-                  isCartEmpty.value = true;
+                final cartItems = cartViewModel.productCartMap.values.toList();
+
+                if (cartItems.isEmpty) {
                   return Center(
                     child: Image.asset(
                       Assets.imagesEmptyCart,
-                      width: 300,
-                      height: 300,
-                      filterQuality: FilterQuality.none,
+                      width: 280,
                     ),
                   );
                 }
-                return Column(
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child: ListView.separated(
-                        scrollDirection: Axis.vertical,
-                        separatorBuilder: (context, index) {
-                          return Divider(
-                            color: Color(0xffF1F1F5),
-                          );
-                        },
-                        itemCount: cartViewModel.productCartMap.length,
-                        itemBuilder: (context, index) {
-                          return CartItemWidget(
-                            item: cartItemList[index],
-                          );
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: Center(
-                        child: Text(
-                          "Your shopping cart will remain saved for the next 72 hours and we will send you a notification to complete your purchase.",
-                          style: TextStyle(
-                              fontSize: 12,
-                              color: Get.theme.colorScheme.primary),
-                        ),
-                      ),
-                    )
-                  ],
+
+                return ListView.separated(
+                  itemCount: cartItems.length,
+                  separatorBuilder: (_, __) =>
+                      const Divider(color: Color(0xffF1F1F5)),
+                  itemBuilder: (context, index) {
+                    return CartItemWidget(item: cartItems[index]);
+                  },
                 );
               }),
             ),
           ),
-          Expanded(
-            flex: 0,
-            child: Container(
-              padding: const EdgeInsets.all(16.0),
-              color: Get.theme.cardColor.withValues(alpha: 0.6),
+          Obx(() {
+            final cartItems = cartViewModel.productCartMap.values.toList();
+
+            final int totalPrice = cartItems.fold<int>(
+              0,
+              (sum, item) =>
+                  sum + (int.parse(item.price ?? "0") * item.itemQuantity),
+            );
+
+            final bool canCheckout = totalPrice >= minimumOrderValue;
+
+            return Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.pink.shade50,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 6,
+                  ),
+                ],
+              ),
               child: Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 8),
-                    child: Text(
-                        "Add more items to meet the 1200da min order value",
-                        style: TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: Get.theme.bottomNavigationBarTheme
-                                .backgroundColor)),
+                  Text(
+                    canCheckout
+                        ? "Minimum order reached 🎉"
+                        : "Add ${_formatRupiah(minimumOrderValue - totalPrice)} more to meet the minimum order",
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: canCheckout ? Colors.green : Colors.blue,
+                    ),
                   ),
-                  SizedBox(
-                    height: 8,
-                  ),
+                  const SizedBox(height: 12),
                   Row(
                     children: [
                       Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Total price (with tax)",
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                              )),
-                          SizedBox(
-                            height: 4,
+                          const Text(
+                            "Total price",
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
-                          Obx(() {
-                            final cartItemList =
-                                cartViewModel.productCartMap.values.toList();
-                            return Text(
-                                cartItemList.isEmpty
-                                    ? "0.00da"
-                                    : cartItemList
-                                            .map((e) =>
-                                                double.parse((e.price ?? "10da")
-                                                    .replaceAll("da", "")) *
-                                                e.itemQuantity)
-                                            .reduce((value, element) =>
-                                                value + element)
-                                            .toStringAsFixed(2) +
-                                        "da",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.bold));
-                          })
+                          const SizedBox(height: 4),
+                          Text(
+                            _formatRupiah(totalPrice),
+                            style: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.red,
+                            ),
+                          ),
                         ],
                       ),
-                      SizedBox(
-                        width: 8,
-                      ),
+                      const SizedBox(width: 12),
                       Expanded(
-                        child: Obx(() {
-                          final cartItemList =
-                              cartViewModel.productCartMap.values.toList();
-                          return ElevatedButton(
-                            onPressed: () => {
-                              cartItemList.isEmpty
-                                  ? null
-                                  : Get.dialog(
-                                      Dialog(
-                                        child: Container(
-                                          padding: EdgeInsets.all(16.0),
-                                          child: Column(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              Text(
-                                                "Thanks for checking out!",
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                        child: ElevatedButton(
+                          onPressed: canCheckout
+                              ? () {
+                                  Get.dialog(
+                                    Dialog(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(16),
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            const Text(
+                                              "Thanks for checking out!",
+                                              style: TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.bold,
                                               ),
-                                              Lottie.asset(
-                                                Assets.imagesDeveloperCoffe,
-                                                width: 300,
-                                                addRepaintBoundary: true,
-                                                //height: 300,
-                                                repeat: false,
-                                                decoder: customDecoder,
-                                              ),
-                                              SizedBox(
-                                                height: 4,
-                                              ),
-                                              Text(
-                                                "This free starter version is designed for friends and developers, so not all features are available. if u have any questions feel free to contact us at",
-                                                style: TextStyle(fontSize: 14),
-                                              ),
-                                              SizedBox(
-                                                height: 8,
-                                              ),
-                                              Text("Settings > About us.",
-                                                  style: TextStyle(
-                                                    decoration: TextDecoration
-                                                        .underline,
-                                                  )),
-                                              SizedBox(height: 14),
-                                              Row(
-                                                children: [
-                                                  Expanded(
-                                                    flex: 1,
-                                                    child: ElevatedButton(
-                                                      onPressed: () => {
-                                                        Get.back()
-                                                      }, // Close the dialog
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                        backgroundColor: Get
-                                                            .theme.primaryColor,
-                                                        //side: BorderSide.none,
-                                                      ),
-                                                      child: const Text(
-                                                        "Close",
-                                                        style: TextStyle(
-                                                            fontSize: 14,
-                                                            color:
-                                                                Colors.white),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
+                                            ),
+                                            const SizedBox(height: 12),
+                                            Lottie.asset(
+                                              Assets.imagesDeveloperCoffe,
+                                              width: 220,
+                                              repeat: false,
+                                              decoder: customDecoder,
+                                            ),
+                                            const SizedBox(height: 12),
+                                            ElevatedButton(
+                                              onPressed: () => Get.back(),
+                                              child: const Text("Close"),
+                                            ),
+                                          ],
                                         ),
                                       ),
-                                    )
-                            },
-                            style: TextButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(vertical: 16),
-                              textStyle: TextStyle(
-                                  fontSize: 14, fontWeight: FontWeight.w500),
-                              shape: StadiumBorder(),
-                              backgroundColor: cartItemList.isNotEmpty
-                                  ? Get.theme.primaryColor
-                                  : Get.theme.disabledColor,
-                            ),
-                            child: Text(
-                              "Checkout",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          );
-                        }),
+                                    ),
+                                  );
+                                }
+                              : null,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: canCheckout
+                                ? Get.theme.primaryColor
+                                : Colors.grey,
+                            shape: const StadiumBorder(),
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                          ),
+                          child: const Text(
+                            "Checkout",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
                       )
                     ],
                   ),
                 ],
               ),
-            ),
-          )
+            );
+          }),
         ],
       ),
     );
+  }
+
+  String _formatRupiah(int value) {
+    return "Rp ${value.toString().replaceAllMapped(
+          RegExp(r'\B(?=(\d{3})+(?!\d))'),
+          (match) => '.',
+        )}";
   }
 }

@@ -15,15 +15,15 @@ class Assets {
 
   /// Assets for imagesBanner1
   /// assets/images/banner1.webp
-  static const String imagesBanner1 = "assets/images/banner1.webp";
+  static const String imagesBanner1 = "assets/images/b1.jpg";
 
   /// Assets for imagesBanner2
   /// assets/images/banner2.webp
-  static const String imagesBanner2 = "assets/images/banner2.webp";
+  static const String imagesBanner2 = "assets/images/b2.jpg";
 
   /// Assets for imagesBanner3
   /// assets/images/banner3.webp
-  static const String imagesBanner3 = "assets/images/banner3.webp";
+  static const String imagesBanner3 = "assets/images/b3.jpg";
 
   /// Assets for imagesCalories
   /// assets/images/calories.png
