@@ -4,13 +4,13 @@ import 'package:florist/constants/assets.dart';
 import 'package:florist/views/welcome.dart';
 
 class SplashScreen extends StatelessWidget {
-  SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     Future.delayed(
-      Duration(seconds: 3),
-      () => Get.offAll(() => const WelcomeScreen()),
+      const Duration(seconds: 3),
+      () => Get.offAll(() => WelcomeScreen()),
     );
 
     return Scaffold(
